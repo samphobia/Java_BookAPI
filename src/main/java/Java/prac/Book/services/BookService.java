@@ -1,5 +1,7 @@
 package Java.prac.Book.services;
 
-public class BookService {
-  
+import Java.prac.Book.domain.Book;
+
+public interface BookService {
+  Book create(Book book);
 }
