@@ -3,15 +3,15 @@ package Java.prac.Book.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import Java.prac.Book.domain.Book;
 import Java.prac.Book.services.BookService;
 
-@Controller
+@RestController
 public class BookController {
 
   private final BookService bookService;
@@ -26,7 +26,7 @@ public class BookController {
     @PathVariable final String isbn,
     @RequestBody final Book book) {
       book.setIsbn(isbn);
-      final Book savedBook = bookService.create(book);
+      final Book savedBook = bookService.save(book);
       final ResponseEntity<Book> response = new ResponseEntity<Book>(savedBook, HttpStatus.CREATED);
       return response;
     }

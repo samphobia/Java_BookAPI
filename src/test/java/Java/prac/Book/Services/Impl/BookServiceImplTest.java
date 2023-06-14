@@ -2,7 +2,10 @@ package Java.prac.Book.Services.Impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.eq;
+
 import static org.mockito.Mockito.when;
+import static Java.prac.Book.TestData.testBook;
+import static Java.prac.Book.TestData.testBookEntity;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -25,21 +28,13 @@ public class BookServiceImplTest {
 
   @Test
   public void testThatBookIsSaved() {
-    final Book book = Book.builder()
-      .isbn("02345678")
-      .author("Obafemi Samuel")
-      .title("The waves")
-        .build();
+    final Book book = testBook();
 
-        final BookEntity bookEntity = BookEntity.builder()
-        .isbn("02345678")
-        .author("Obafemi Samuel")
-        .title("The waves")
-            .build();
+    final BookEntity bookEntity = testBookEntity();
 
         when(bookRepository.save(eq(bookEntity))).thenReturn(bookEntity);
           
-        final Book result = underTest.create(book);
+        final Book result = underTest.save(book);
           assertEquals(book, result);
       
   }
