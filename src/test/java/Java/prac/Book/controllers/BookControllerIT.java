@@ -31,11 +31,18 @@ public class BookControllerIT {
     final String bookJson = objectMapper.writeValueAsString(book);
 
     mockMvc.perform(MockMvcRequestBuilders.put("/books/" + book.getIsbn())
-    .contentType(MediaType.APPLICATION_JSON).content(bookJson))
-    .andExpect(MockMvcResultMatchers.status().isCreated())
-    .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value(book.getIsbn()))
-    .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(book.getTitle()))
-    .andExpect(MockMvcResultMatchers.jsonPath("$.author").value(book.getAuthor()));
+        .contentType(MediaType.APPLICATION_JSON).content(bookJson))
+        .andExpect(MockMvcResultMatchers.status().isCreated())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value(book.getIsbn()))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(book.getTitle()))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.author").value(book.getAuthor()));
+  }
+  
+  @Test
+  public void testThatRetrieveBookReturns404WhenBookNotFound() throws Exception {
+    mockMvc
+        .perform(MockMvcRequestBuilders.get("/books/123123123"))
+        .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 
 }
