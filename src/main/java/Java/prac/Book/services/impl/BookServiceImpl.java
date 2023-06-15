@@ -57,5 +57,15 @@ public class BookServiceImpl implements BookService {
     final List<BookEntity> foundBooks = bookRepository.findAll();
     return foundBooks.stream().map(book -> bookEntityToBook(book)).collect(Collectors.toList());
   }
+
+  @Override
+  public boolean isBookExist(Book book) {
+    return bookRepository.existsById(book.getIsbn());
+  }
+
+  @Override
+  public void deleteBookById(String isbn) {
+   
+  }
   
 }

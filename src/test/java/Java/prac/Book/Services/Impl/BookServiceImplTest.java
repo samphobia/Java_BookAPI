@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 
 import static org.mockito.Mockito.when;
@@ -76,6 +77,20 @@ public class BookServiceImplTest {
     when(bookRepository.findAll()).thenReturn(List.of(bookEntity));
     final List<Book> result = underTest.listBooks();
     assertEquals(1, result.size());
+  }
+
+  @Test
+  public void testIsBookExistsReturnsFalseWhenBookDoesntExist() {
+    when(bookRepository.existsById(any())).thenReturn(false);
+    final boolean result = underTest.isBookExist(testBook());
+    assertEquals(false, result);
+  }
+
+  @Test
+  public void testIsBookExistsReturnstrueWhenBookDoesntExist() {
+    when(bookRepository.existsById(any())).thenReturn(true);
+    final boolean result = underTest.isBookExist(testBook());
+    assertEquals(true, result);
   }
 
 }

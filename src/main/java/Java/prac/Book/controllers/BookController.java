@@ -1,5 +1,6 @@
 package Java.prac.Book.controllers;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +26,19 @@ public class BookController {
   }
 
   @PutMapping(path = "/books/{isbn}")
-  public ResponseEntity<Book> createBook(
+  public ResponseEntity<Book> createUpdateBook(
     @PathVariable final String isbn,
       @RequestBody final Book book) {
     book.setIsbn(isbn);
+    
+    final boolean isBookExists = bookService.isBookExist(book);
     final Book savedBook = bookService.save(book);
-    final ResponseEntity<Book> response = new ResponseEntity<Book>(savedBook, HttpStatus.CREATED);
-    return response;
+
+    if (isBookExists) {
+      return new ResponseEntity<Book>(savedBook, HttpStatus.OK);
+    } else {
+      return new ResponseEntity<Book>(savedBook, HttpStatus.CREATED);
+    }
   }
     
   @GetMapping(path = "/books/{isbn}")
@@ -41,6 +48,12 @@ public class BookController {
         .map(book -> new ResponseEntity<Book>(book, HttpStatus.OK))
         .orElse(new ResponseEntity<Book>(HttpStatus.NOT_FOUND));
   }
+
+  @GetMapping(path = "/books")
+  public ResponseEntity<List<Book>> listBooks() {
+    return new ResponseEntity<List<Book>>(bookService.listBooks(), HttpStatus.OK);
+  }
+
 
   }
   
