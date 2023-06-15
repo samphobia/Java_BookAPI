@@ -1,5 +1,7 @@
 package Java.prac.Book.Services.Impl;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -59,6 +61,21 @@ public class BookServiceImplTest {
 
     final Optional<Book> result = underTest.findById(book.getIsbn());
     assertEquals(Optional.of(book), result);
+  }
+
+  @Test
+  public void testListBooksReturnsEmptyListWhenNoBooksExist() {
+    when(bookRepository.findAll()).thenReturn(new ArrayList<BookEntity>());
+    final List<Book> result = underTest.listBooks();
+    assertEquals(0, result.size());
+  }
+
+  @Test
+  public void testListBooksReturnsBooksWhenExist() {
+    final BookEntity bookEntity = testBookEntity();
+    when(bookRepository.findAll()).thenReturn(List.of(bookEntity));
+    final List<Book> result = underTest.listBooks();
+    assertEquals(1, result.size());
   }
 
 }

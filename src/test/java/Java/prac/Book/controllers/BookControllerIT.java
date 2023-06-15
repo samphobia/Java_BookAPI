@@ -15,6 +15,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Java.prac.Book.TestData;
 import Java.prac.Book.domain.Book;
+import Java.prac.Book.services.BookService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -23,6 +24,8 @@ public class BookControllerIT {
 
   @Autowired
   private MockMvc mockMvc;
+
+  @Autowired private BookService bookService;
 
   @Test
   public void testThatBookIsCreated() throws Exception {
@@ -43,6 +46,19 @@ public class BookControllerIT {
     mockMvc
         .perform(MockMvcRequestBuilders.get("/books/123123123"))
         .andExpect(MockMvcResultMatchers.status().isNotFound());
+  }
+
+  @Test
+  public void testThatRetrieveBookReturnsHttp200AndBookWhenExists() throws Exception {
+    final Book book = TestData.testBook();
+    bookService.save(book);
+
+    mockMvc
+        .perform(MockMvcRequestBuilders.get("/books/" + book.getIsbn()))
+        .andExpect(MockMvcResultMatchers.status().isOk())
+        .andExpect(MockMvcResultMatchers.jsonPath("$.isbn").value(book.getIsbn()))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(book.getTitle()))
+        .andExpect(MockMvcResultMatchers.jsonPath("$.author").value(book.getAuthor()));
   }
 
 }
