@@ -7,6 +7,8 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import static org.mockito.Mockito.when;
 import static Java.prac.Book.TestData.testBook;
@@ -93,4 +95,11 @@ public class BookServiceImplTest {
     assertEquals(true, result);
   }
 
+  @Test
+  public void testDeleteBookDeletesBook() {
+    final String isbn = "13123213";
+    underTest.deleteBookById(isbn);
+    verify(bookRepository, times(1)).deleteById(eq(isbn));
+  }
 }
+

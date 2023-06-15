@@ -30,7 +30,7 @@ public class BookController {
     @PathVariable final String isbn,
       @RequestBody final Book book) {
     book.setIsbn(isbn);
-    
+
     final boolean isBookExists = bookService.isBookExist(book);
     final Book savedBook = bookService.save(book);
 
@@ -54,6 +54,5 @@ public class BookController {
     return new ResponseEntity<List<Book>>(bookService.listBooks(), HttpStatus.OK);
   }
 
-
-  }
+}
   
